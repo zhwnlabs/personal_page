@@ -1,5 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useRef, useState, type CSSProperties } from "react";
+import { spritePaths } from "@/lib/pixel-sprite";
+import gallery1 from "@/assets/zine1.webp.asset.json";
+import gallery2 from "@/assets/zine2.webp.asset.json";
+import gallery3 from "@/assets/zine3.webp.asset.json";
+import gallery4 from "@/assets/zine4.webp.asset.json";
 
 /* =====================================================================
    KONTEN — ganti semua data di blok ini dengan datamu sendiri
@@ -23,10 +28,10 @@ const DATA = {
   inventory: ["Figma", "Git", "Vite", "Node", "SVG", "Canvas", "Supabase", "Tailwind"],
   gallery: [
     // GANTI FOTO: ubah URL "img" dengan foto milikmu (filter duotone otomatis)
-    { img: "https://picsum.photos/seed/zine1/500/500", cap: "game retro", r: -6 },
-    { img: "https://picsum.photos/seed/zine2/500/500", cap: "street photo", r: 4 },
-    { img: "https://picsum.photos/seed/zine3/500/500", cap: "koleksi stiker", r: -2 },
-    { img: "https://picsum.photos/seed/zine4/500/500", cap: "kopi & kode", r: 6 },
+    { img: gallery1.url, cap: "game retro", r: -6 },
+    { img: gallery2.url, cap: "street photo", r: 4 },
+    { img: gallery3.url, cap: "koleksi stiker", r: -2 },
+    { img: gallery4.url, cap: "kopi & kode", r: 6 },
   ],
   funFact: "Fun fact: aku pernah tamat game 8-bit dalam satu malam tanpa save!",
   email: "halo@zahwan.dev",
@@ -60,7 +65,7 @@ function Sprite({ rows, colors, size = 8, className, label }: { rows: string[]; 
   const w = rows[0].length, h = rows.length;
   return (
     <svg viewBox={`0 0 ${w} ${h}`} width={w * size} height={h * size} className={`pixelated ${className ?? ""}`} shapeRendering="crispEdges" role={label ? "img" : undefined} aria-label={label} aria-hidden={label ? undefined : true}>
-      {rows.flatMap((r, y) => [...r].map((c, x) => (colors[c] ? <rect key={`${x}-${y}`} x={x} y={y} width="1" height="1" fill={colors[c]} /> : null)))}
+      {spritePaths(rows, colors).map(({ fill, d }) => <path key={fill} d={d} fill={fill} />)}
     </svg>
   );
 }
@@ -72,7 +77,6 @@ const MASCOT = [
   "kwwwkkwwwwkkwwwk", "kwwwkkwwwwkkwwwk", "kwppwwwwwwwwppwk", "kwwwwwkkkkwwwwwk",
   "kwwwwwwkkwwwwwwk", ".kwwwwwwwwwwwwk.", "..kkwwwwwwwwkk..", "...kbbk..kbbk...", "...kkkk..kkkk...",
 ];
-const MASCOT_BLINK = MASCOT.map((r, i) => (i === 4 ? "kwwwwwwwwwwwwwwk" : i === 5 ? "kwwwkkwwwwkkwwwk" : r));
 const HEART = [".kk.kk.", "kppkppk", "kpppppk", ".kpppk.", "..kpk..", "...k..."];
 const PLANET = [
   "......bbbbbbbb......", "....bbssbbbbbbbb....", "...bssssbbbbsbbbb...", "..bbssbbbbbsssbbbb..",
@@ -108,42 +112,53 @@ function beep(on: boolean, freq = 660, dur = 0.08) {
 
 function Index() {
   const [active, setActive] = useState("");
-  const [blink, setBlink] = useState(false);
   const [sound, setSound] = useState(false);
   const [toast, setToast] = useState<string | null>(null);
   const [sent, setSent] = useState(false);
   const soundRef = useRef(sound);
+  const toastTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
   soundRef.current = sound;
-
-  // blink mascot
-  useEffect(() => {
-    const t = setInterval(() => { setBlink(true); setTimeout(() => setBlink(false), 180); }, 3200);
-    return () => clearInterval(t);
-  }, []);
 
   // reveal + active nav
   useEffect(() => {
-    const io = new IntersectionObserver((es) => es.forEach((e) => e.isIntersecting && e.target.classList.add("in")), { threshold: 0.15 });
+    const io = new IntersectionObserver((es) => es.forEach((e) => {
+      if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); }
+    }), { threshold: 0.15 });
     document.querySelectorAll(".reveal").forEach((el) => io.observe(el));
+    const motion = new IntersectionObserver((es) => es.forEach((e) => e.target.classList.toggle("is-visible", e.isIntersecting)));
+    document.querySelectorAll("main > header, main > section").forEach((el) => motion.observe(el));
+    const visibility = () => document.documentElement.classList.toggle("page-hidden", document.hidden);
+    document.addEventListener("visibilitychange", visibility);
     const nav = new IntersectionObserver((es) => es.forEach((e) => e.isIntersecting && setActive(e.target.id)), { rootMargin: "-45% 0px -50% 0px" });
     NAV.forEach(([id]) => { const el = document.getElementById(id); if (el) nav.observe(el); });
-    return () => { io.disconnect(); nav.disconnect(); };
+    return () => {
+      io.disconnect(); nav.disconnect(); motion.disconnect();
+      document.removeEventListener("visibilitychange", visibility);
+      document.documentElement.classList.remove("page-hidden");
+      clearTimeout(toastTimer.current);
+    };
   }, []);
 
   const celebrate = (msg: string) => {
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) { setToast(msg); setTimeout(() => setToast(null), 2500); return; }
+    clearTimeout(toastTimer.current);
+    setToast(msg); toastTimer.current = setTimeout(() => setToast(null), 2500);
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (document.querySelector(".confetti")) return;
     const cols = ["var(--pink)", "var(--yellow)", "var(--cobalt)", "var(--sky)"];
-    for (let i = 0; i < 40; i++) {
+    const fragment = document.createDocumentFragment();
+    const count = window.matchMedia("(max-width: 767px), (pointer: coarse)").matches ? 12 : 28;
+    for (let i = 0; i < count; i++) {
       const d = document.createElement("div");
       d.className = "confetti";
       d.style.left = `${Math.random() * 100}vw`; d.style.top = "-20px";
       d.style.background = cols[i % 4];
       d.style.setProperty("--dx", `${(Math.random() - 0.5) * 200}px`);
       d.style.animationDelay = `${Math.random() * 0.4}s`;
-      document.body.appendChild(d); setTimeout(() => d.remove(), 2200);
+      fragment.appendChild(d);
     }
+    document.body.appendChild(fragment);
+    setTimeout(() => document.querySelectorAll(".confetti").forEach((el) => el.remove()), 2200);
     [523, 659, 784, 1046].forEach((f, i) => setTimeout(() => beep(soundRef.current, f, 0.1), i * 100));
-    setToast(msg); setTimeout(() => setToast(null), 2500);
   };
 
   // Konami code
@@ -183,7 +198,10 @@ function Index() {
           <div style={{ margin: "36px 0 28px" }}>
             {/* klik maskot = easter egg */}
             <button className="mascot" onClick={() => celebrate("BOBO BILANG: HAI! TERIMA KASIH SUDAH MAMPIR ♥")} aria-label="Maskot Bobo — klik untuk kejutan">
-              <Sprite rows={blink ? MASCOT_BLINK : MASCOT} colors={C} size={8} />
+              <Sprite rows={MASCOT} colors={C} size={8} />
+              <svg className="mascot-eyelids pixelated" viewBox="0 0 16 13" width="128" height="104" aria-hidden shapeRendering="crispEdges">
+                <path d="M4 4h2v1H4zM10 4h2v1h-2z" fill="var(--paper)" />
+              </svg>
             </button>
           </div>
           <a href="#tentang" className="px-btn" onClick={() => beep(sound)}>▶ Press Start</a>
@@ -276,7 +294,7 @@ function Index() {
               {DATA.gallery.map((g) => (
                 <figure key={g.cap} className="polaroid reveal" style={{ "--r": `${g.r}deg`, margin: 0 } as CSSProperties}>
                   <span className="tape" aria-hidden />
-                  <div className="duo"><img src={g.img} alt={`Foto ${g.cap}`} loading="lazy" /></div>
+                  <div className="duo"><img src={g.img} alt={`Foto ${g.cap}`} loading="lazy" decoding="async" width={500} height={500} fetchPriority="low" /></div>
                   <figcaption className="t-pix2" style={{ textAlign: "center", marginTop: 8, fontSize: 18 }}>{g.cap}</figcaption>
                 </figure>
               ))}
