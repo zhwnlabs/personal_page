@@ -11,23 +11,31 @@
   var toastEl = document.getElementById("toast"), tt;
   function toast(msg) { toastEl.textContent = msg; toastEl.hidden = false; clearTimeout(tt); tt = setTimeout(function () { toastEl.hidden = true; }, 2500); }
   function celebrate(msg) {
-    if (!matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    if (!matchMedia("(prefers-reduced-motion: reduce)").matches && !document.querySelector(".confetti")) {
       var cols = ["var(--pink)", "var(--yellow)", "var(--cobalt)", "var(--sky)"];
-      for (var i = 0; i < 40; i++) {
+      var count = matchMedia("(max-width: 767px), (pointer: coarse)").matches ? 12 : 28;
+      var fragment = document.createDocumentFragment();
+      for (var i = 0; i < count; i++) {
         var d = document.createElement("div"); d.className = "confetti";
         d.style.left = Math.random() * 100 + "vw"; d.style.top = "-20px"; d.style.background = cols[i % 4];
         d.style.setProperty("--dx", (Math.random() - 0.5) * 200 + "px");
         d.style.animationDelay = Math.random() * 0.4 + "s";
-        document.body.appendChild(d); (function (el) { setTimeout(function () { el.remove(); }, 2200); })(d);
+        fragment.appendChild(d);
       }
+      document.body.appendChild(fragment);
+      setTimeout(function () { document.querySelectorAll(".confetti").forEach(function (el) { el.remove(); }); }, 2200);
       [523, 659, 784, 1046].forEach(function (f, i) { setTimeout(function () { beep(sound, f, 0.1); }, i * 100); });
     }
     toast(msg);
   }
 
   // reveal on scroll
-  var io = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) e.target.classList.add("in"); }); }, { threshold: 0.15 });
+  var io = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } }); }, { threshold: 0.15 });
   document.querySelectorAll(".reveal").forEach(function (el) { io.observe(el); });
+
+  var motion = new IntersectionObserver(function (es) { es.forEach(function (e) { e.target.classList.toggle("is-visible", e.isIntersecting); }); });
+  document.querySelectorAll("main > header, main > section").forEach(function (el) { motion.observe(el); });
+  document.addEventListener("visibilitychange", function () { document.documentElement.classList.toggle("page-hidden", document.hidden); });
 
   // nav aktif
   var links = document.querySelectorAll('.nav a[href^="#"]:not([role])');
@@ -43,11 +51,6 @@
 
   // maskot: kedip + easter egg
   var mascot = document.querySelector(".mascot");
-  var eyes = mascot.querySelectorAll('rect[y="4"], rect[y="5"]');
-  setInterval(function () {
-    eyes.forEach(function (r) { if (r.getAttribute("y") === "4" && r.getAttribute("fill") === "var(--ink)" && r.getAttribute("x") !== "0" && r.getAttribute("x") !== "15") r.setAttribute("fill", "var(--paper)"); });
-    setTimeout(function () { eyes.forEach(function (r) { if (r.getAttribute("y") === "4" && r.getAttribute("fill") === "var(--paper)" && ["4","5","10","11"].indexOf(r.getAttribute("x")) > -1) r.setAttribute("fill", "var(--ink)"); }); }, 180);
-  }, 3200);
   mascot.addEventListener("click", function () { celebrate("BOBO BILANG: HAI! TERIMA KASIH SUDAH MAMPIR ♥"); });
 
   // Konami code
