@@ -8,3 +8,5 @@
 > Commits you push to the connected branch sync back to Lovable and show up in
 > the editor, so keep the branch in a working state.
 <!-- LOVABLE:END -->
+
+- `docs/` is a hand-maintained static HTML/CSS/JS copy of the home page for GitHub Pages (no build); update it when the home page content changes.
