@@ -62,7 +62,7 @@ const NAV = [
 
 /* ---------- pixel sprite helper: render matrix to SVG ---------- */
 function Sprite({ rows, colors, size = 8, className, label }: { rows: string[]; colors: Record<string, string>; size?: number; className?: string; label?: string }) {
-  const w = rows[0].length, h = rows.length;
+  const w = rows[0]?.length ?? 0, h = rows.length;
   return (
     <svg viewBox={`0 0 ${w} ${h}`} width={w * size} height={h * size} className={`pixelated ${className ?? ""}`} shapeRendering="crispEdges" role={label ? "img" : undefined} aria-label={label} aria-hidden={label ? undefined : true}>
       {spritePaths(rows, colors).map(({ fill, d }) => <path key={fill} d={d} fill={fill} />)}
@@ -151,7 +151,7 @@ function Index() {
       const d = document.createElement("div");
       d.className = "confetti";
       d.style.left = `${Math.random() * 100}vw`; d.style.top = "-20px";
-      d.style.background = cols[i % 4];
+      d.style.background = cols[i % 4] ?? "var(--pink)";
       d.style.setProperty("--dx", `${(Math.random() - 0.5) * 200}px`);
       d.style.animationDelay = `${Math.random() * 0.4}s`;
       fragment.appendChild(d);
