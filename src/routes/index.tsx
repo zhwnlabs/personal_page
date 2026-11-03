@@ -18,7 +18,7 @@ export const DATA = {
   bioSmall: "Dari Garut. Saat tidak ngoding: foto hal random, baca manga dan novel, main Wuthering Waves atau Roblox, dan nonton YouTube.",
   projects: [
     { title: "Camera Tracking", desc: "Track tangan dengan kamera.", tags: ["Python", "OpenCV", "MediaPipe"], link: "https://github.com/zhwnlabs/cameratracking" },
-    { title: "Get All Camera", desc: "Akses kamera jarak jauh.", tags: [], link: "https://github.com/zhwnlabs/4mysoulmate" },
+    { title: "Get All Camera", desc: "Akses kamera jarak jauh.", tags: [], link: "https://github.com/zhwnlabs/gett-all-camera" },
     { title: "My Community", desc: "Website komunitas.", tags: [], link: "https://zhwnlabs.github.io/deep_garage/" },
   ],
   skills: [
