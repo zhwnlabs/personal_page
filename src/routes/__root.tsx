@@ -3,6 +3,7 @@ import {
   Outlet,
   Link,
   createRootRouteWithContext,
+  redirect,
   useRouter,
   HeadContent,
   Scripts,
@@ -12,6 +13,7 @@ import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
+import { needsMaintenanceRedirect } from "../maintenance.config";
 
 function NotFoundComponent() {
   return (
@@ -74,6 +76,10 @@ function ErrorComponent({ error, reset }: ErrorComponentProps) {
 }
 
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
+  // Mode perawatan: nyalakan lewat src/maintenance.config.ts.
+  beforeLoad: ({ location }) => {
+    if (needsMaintenanceRedirect(location.pathname)) throw redirect({ to: "/maintenance" });
+  },
   head: () => ({
     meta: [
       { charSet: "utf-8" },
