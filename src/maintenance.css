@@ -1,0 +1,91 @@
+/* ============ MAINTENANCE — langit malam pixel (/maintenance) ============
+   Satu "piksel" = --u. Ukuran, posisi, dan bayangan dibuat dari kelipatan --u, dan semua
+   animasi memakai steps(), jadi tidak ada yang blur atau jatuh di setengah piksel.
+   Press Start 2P digambar di grid 8px, jadi font-size = 8 * --u membuat piksel hurufnya sama besar. */
+.mt-sky {
+  --u: 4px;
+  position: relative; display: grid; place-items: center; overflow: hidden;
+  min-height: 100vh; min-height: 100dvh;
+  padding: calc(var(--u) * 4) calc(var(--u) * 3) calc(var(--u) * 24);
+  color: var(--paper); background-color: #04050f;
+  background-image: linear-gradient(0deg,
+    #25266a 0 calc(var(--u) * 6), #1d1e5a calc(var(--u) * 6) calc(var(--u) * 12),
+    #16174a calc(var(--u) * 12) calc(var(--u) * 20), #101139 calc(var(--u) * 20) calc(var(--u) * 30),
+    #0a0b2a calc(var(--u) * 30) calc(var(--u) * 42), #070820 calc(var(--u) * 42) calc(var(--u) * 56),
+    #05061a calc(var(--u) * 56) calc(var(--u) * 72), #04050f calc(var(--u) * 72));
+  -webkit-font-smoothing: none;
+}
+@media (max-width: 359px) { .mt-sky { --u: 3px; } }
+@media (min-width: 640px) { .mt-sky { --u: 6px; } }
+@media (min-width: 1280px) { .mt-sky { --u: 8px; } }
+
+/* stars: posisi persen dibulatkan ke grid piksel */
+.mt-stars { position: absolute; inset: 0; }
+.mt-star {
+  --c: var(--paper);
+  position: absolute; width: var(--u); height: var(--u); background: var(--c);
+  left: var(--x); top: var(--y);
+  left: round(down, var(--x), var(--u)); top: round(down, var(--y), var(--u));
+  animation: mt-twinkle 3.2s steps(1) infinite;
+}
+.mt-star-s { --c: var(--sky); }
+.mt-star-y { --c: var(--yellow); }
+.mt-star-big { box-shadow: var(--u) 0 0 var(--c), calc(var(--u) * -1) 0 0 var(--c), 0 var(--u) 0 var(--c), 0 calc(var(--u) * -1) 0 var(--c); }
+@keyframes mt-twinkle { 0% { opacity: 1; } 72% { opacity: .15; } 80% { opacity: 1; } }
+
+/* bintang jatuh: bergeser 2u ke kiri dan 1u ke bawah per langkah */
+.mt-shoot {
+  position: absolute; top: calc(var(--u) * 12); width: var(--u); height: var(--u);
+  left: 68%; left: round(down, 68%, var(--u));
+  background: var(--paper); opacity: 0;
+  box-shadow: calc(var(--u) * 2) calc(var(--u) * -1) 0 var(--sky), calc(var(--u) * 4) calc(var(--u) * -2) 0 var(--cobalt);
+  animation: mt-shoot 11s linear infinite;
+}
+@keyframes mt-shoot {
+  0% { opacity: 0; transform: translate(0, 0); animation-timing-function: steps(1); }
+  86% { opacity: 1; transform: translate(0, 0); animation-timing-function: steps(12); }
+  100% { opacity: 1; transform: translate(calc(var(--u) * -24), calc(var(--u) * 12)); }
+}
+
+.mt-moon { position: absolute; top: calc(var(--u) * 8); right: calc(var(--u) * 8); }
+.mt-moon svg, .mt-cloud svg, .mt-gear svg { display: block; }
+.mt-cloud { position: absolute; animation: mt-bob 6s steps(1) infinite; }
+.mt-cloud-a { top: calc(var(--u) * 22); left: 6%; left: round(down, 6%, var(--u)); }
+.mt-cloud-b { top: calc(var(--u) * 34); left: 58%; left: round(down, 58%, var(--u)); animation-delay: -3s; }
+@keyframes mt-bob { 0% { transform: translateY(0); } 50% { transform: translateY(var(--u)); } }
+
+.mt-center { position: relative; z-index: 2; display: flex; flex-direction: column; align-items: center; gap: calc(var(--u) * 5); }
+
+/* roda gigi: dua frame yang bergantian, bukan rotasi (rotasi membuat piksel buram) */
+.mt-gear { position: relative; width: calc(var(--u) * 15); height: calc(var(--u) * 15); }
+.mt-gear > div { position: absolute; inset: 0; }
+.mt-gear-a { animation: mt-flip-a .5s steps(1) infinite; }
+.mt-gear-b { opacity: 0; animation: mt-flip-b .5s steps(1) infinite; }
+@keyframes mt-flip-a { 0% { opacity: 1; } 50% { opacity: 0; } }
+@keyframes mt-flip-b { 0% { opacity: 0; } 50% { opacity: 1; } }
+
+.mt-title {
+  margin: 0; font-family: var(--f-pixel); font-weight: 400; font-size: calc(var(--u) * 8);
+  line-height: 1.5; letter-spacing: 0; text-align: center; text-transform: uppercase; color: var(--paper);
+  text-shadow:
+    var(--u) 0 0 var(--cobalt), 0 var(--u) 0 var(--cobalt), var(--u) var(--u) 0 var(--cobalt),
+    calc(var(--u) * 2) var(--u) 0 #0b0c3a, var(--u) calc(var(--u) * 2) 0 #0b0c3a, calc(var(--u) * 2) calc(var(--u) * 2) 0 #0b0c3a;
+}
+.mt-title span { display: block; }
+.mt-title span:last-child { color: var(--yellow); }
+
+/* indikator: dua blok menyala berpindah dari kiri ke kanan */
+.mt-bar { display: flex; gap: var(--u); padding: var(--u); background: #04050f; border: var(--u) solid var(--paper); box-shadow: var(--u) var(--u) 0 var(--cobalt); }
+.mt-bar i { display: block; width: calc(var(--u) * 3); height: calc(var(--u) * 3); background: #1d2058; animation: mt-chase 3.2s steps(1) infinite; animation-delay: calc(var(--i) * .4s); }
+@keyframes mt-chase { 0% { background: var(--yellow); } 25% { background: #1d2058; } }
+
+/* siluet kota: satu tile 96x20 piksel yang diulang ke kanan */
+.mt-skyline {
+  position: absolute; left: 0; right: 0; bottom: 0; height: calc(var(--u) * 20);
+  background-repeat: repeat-x; background-position: left bottom;
+  background-size: calc(var(--u) * 96) calc(var(--u) * 20); image-rendering: pixelated;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mt-bar i:nth-child(-n + 4) { background: var(--yellow); }
+}
