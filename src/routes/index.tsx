@@ -1,44 +1,42 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useRef, useState, type CSSProperties } from "react";
 import { spritePaths } from "@/lib/pixel-sprite";
-import gallery1 from "@/assets/zine1.webp.asset.json";
+import gallery1 from "@/assets/rpg-desk.webp.asset.json";
 import gallery2 from "@/assets/zine2.webp.asset.json";
-import gallery3 from "@/assets/zine3.webp.asset.json";
+import gallery3 from "@/assets/novel-desk.webp.asset.json";
 import gallery4 from "@/assets/zine4.webp.asset.json";
 
 /* =====================================================================
    KONTEN — ganti semua data di blok ini dengan datamu sendiri
    ===================================================================== */
-const DATA = {
+export const DATA = {
   name: "ZAHWAN",
-  role: "Creative Front-end Developer",
-  tagline: "Ngoding piksel demi piksel, satu level setiap hari.",
-  bioBig: "Aku developer yang suka bikin web terasa hidup — gabungan kode rapi, desain playful, dan sedikit nostalgia game lawas.",
-  bioSmall: "Berbasis di Jakarta. Senang eksplorasi UI interaktif, animasi kecil, dan pengalaman web yang bikin orang senyum. Saat tidak ngoding: main game retro, motret jalanan, dan ngumpulin stiker.",
+  role: "UI/UX Designer · Anak SMK",
+  tagline: "Ekspresikan apapun lewat coding.",
+  bioBig: "Aku seorang siswa SMK dengan jurusan jaringan, namun aku juga suka membuat beberapa app sederhana dan menyenangkan!",
+  bioSmall: "Dari Garut. Saat tidak ngoding: foto hal random, baca manga dan novel, main Wuthering Waves atau Roblox, dan nonton YouTube.",
   projects: [
-    { title: "Pixel Pantry", desc: "Aplikasi resep dengan UI ala inventory game.", tags: ["React", "Tailwind"], link: "#" },
-    { title: "Kota Senja", desc: "Peta interaktif tempat nongkrong sore di Jakarta.", tags: ["Leaflet", "TypeScript"], link: "#" },
-    { title: "Zine Maker", desc: "Editor zine digital drag-and-drop, ekspor ke PDF.", tags: ["Canvas", "Node"], link: "#" },
-    { title: "Lo-Fi Timer", desc: "Pomodoro dengan musik 8-bit buatan WebAudio.", tags: ["WebAudio", "Vite"], link: "#" },
+    { title: "Camera Tracking", desc: "Track tangan dengan kamera.", tags: ["Python", "OpenCV", "MediaPipe"], link: "https://github.com/zhwnlabs/cameratracking" },
+    { title: "Get All Camera", desc: "Akses kamera jarak jauh.", tags: [], link: "https://github.com/zhwnlabs/4mysoulmate" },
+    { title: "My Community", desc: "Website komunitas.", tags: [], link: "https://zhwnlabs.github.io/deep_garage/" },
   ],
   skills: [
-    { name: "HTML/CSS", lv: 9 }, { name: "JavaScript", lv: 8 }, { name: "React", lv: 8 },
-    { name: "UI Design", lv: 7 }, { name: "Animasi", lv: 6 },
+    { name: "Blender", lv: 4 }, { name: "Photography", lv: 9 }, { name: "Design", lv: 8 },
+    { name: "Editing", lv: 7 }, { name: "PHP", lv: 3 },
   ],
-  inventory: ["Figma", "Git", "Vite", "Node", "SVG", "Canvas", "Supabase", "Tailwind"],
+  inventory: ["VS Code", "Obsidian", "Blender", "Adobe Illustrator", "Lightroom", "Roblox Studio", "Discord", "CapCut"],
   gallery: [
     // GANTI FOTO: ubah URL "img" dengan foto milikmu (filter duotone otomatis)
-    { img: gallery1.url, cap: "game retro", r: -6 },
-    { img: gallery2.url, cap: "street photo", r: 4 },
-    { img: gallery3.url, cap: "koleksi stiker", r: -2 },
+    { img: gallery1.url, cap: "game RPG", r: -6 },
+    { img: gallery2.url, cap: "foto random", r: 4 },
+    { img: gallery3.url, cap: "novel", r: -2 },
     { img: gallery4.url, cap: "kopi & kode", r: 6 },
   ],
-  funFact: "Fun fact: aku pernah tamat game 8-bit dalam satu malam tanpa save!",
-  email: "halo@zahwan.dev",
+  funFact: "Aku seorang anak ADHD yang cenderung membutuhkan dopamin lebih banyak, itulah sebabnya aku membangun semua ini:)",
+  email: "ramadhanzahwan98@gmail.com",
   socials: [
-    { label: "GitHub", url: "https://github.com/" },
-    { label: "Instagram", url: "https://instagram.com/" },
-    { label: "LinkedIn", url: "https://linkedin.com/" },
+    { label: "GitHub", url: "https://github.com/zhwnlabs" },
+    { label: "Instagram", url: "https://instagram.com/z2.rnn/" },
   ],
 };
 
@@ -221,7 +219,7 @@ function Index() {
             <h2 className="sec-title">Siapa aku?</h2>
             <div style={{ display: "grid", gap: 32, gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))" }}>
               <p style={{ fontSize: "clamp(20px, 2.6vw, 28px)", lineHeight: 1.5, margin: 0 }}>
-                Aku <span className="hl-pink" style={{ color: "var(--ink)" }}>developer</span> yang suka bikin web terasa <span className="hl-pink" style={{ color: "var(--ink)" }}>hidup</span> — {DATA.bioBig.split("—")[1]}
+                {DATA.bioBig}
               </p>
               <p className="t-mono" style={{ fontSize: 14, margin: 0, opacity: 0.85 }}>&gt; {DATA.bioSmall}</p>
             </div>
