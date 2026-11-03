@@ -10,3 +10,5 @@
 <!-- LOVABLE:END -->
 
 - `docs/` is a hand-maintained static HTML/CSS/JS copy of the home page for GitHub Pages (no build); update it when the home page content changes.
+- Render pixel sprites as color-grouped SVG paths and animate mascot eyelids with CSS to avoid periodic whole-page React updates.
+- Keep performance optimizations in both the app and static copy; static media references must use absolute Lovable asset URLs so repository subpaths work on GitHub Pages.

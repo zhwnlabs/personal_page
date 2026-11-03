@@ -121,3 +121,29 @@ section { position: relative; scroll-margin-top: 70px; }
   *, *::before, *::after { animation: none !important; transition: none !important; }
   html { scroll-behavior: auto; } .reveal { opacity: 1; transform: none; }
 }
+
+/* Lightweight motion: only visible sections animate. */
+.mascot { position: relative; }
+.mascot-eyelids { position: absolute; inset: 0; opacity: 0; animation: eyelids 3.2s steps(1) infinite; }
+@keyframes eyelids { 0%, 94%, 100% { opacity: 0; } 95%, 99% { opacity: 1; } }
+main > :not(.is-visible) .cloud,
+main > :not(.is-visible) .twinkle,
+main > :not(.is-visible) .star,
+main > :not(.is-visible) .mascot,
+main > :not(.is-visible) .mascot-eyelids,
+.page-hidden .cloud, .page-hidden .twinkle, .page-hidden .star,
+.page-hidden .mascot, .page-hidden .mascot-eyelids { animation-play-state: paused; }
+@media (max-width: 767px), (pointer: coarse) {
+  .grain::after, .scanlines, .duo::after { display: none; }
+  .cloud, .twinkle, .star { animation: none; }
+  .cloud { transform: scale(1.5); opacity: .3; pointer-events: none; }
+  .cloud:nth-child(2) { left: 58%; }
+  .cloud:nth-child(3) { left: 20%; }
+  .cloud:nth-child(4) { left: 65%; }
+  .device:hover { animation: none; }
+  .device:hover .screen { filter: none; text-shadow: none; }
+  .polaroid:hover { transform: rotate(var(--r)); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .mascot-eyelids { opacity: 0; }
+}
