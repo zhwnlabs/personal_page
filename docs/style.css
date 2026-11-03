@@ -1,8 +1,7 @@
-
 /* ============ PIXEL ZINE SCRAPBOOK — design tokens (ganti warna di sini) ============ */
 :root {
   --cobalt: #1f3fd8; --sky: #5fa8e8; --ink: #0b0b0f; --paper: #f4f5fa;
-  --grid: #d9dceb; --pink: #ff4fb0; --yellow: #fff04d; --sage: #b9c0b0;
+  --grid: #d9dceb; --pink: #9D4EDD; --yellow: #fff04d; --sage: #b9c0b0;
   --background: var(--paper); --foreground: var(--ink);
   --primary: var(--cobalt); --primary-foreground: var(--paper);
   --border: var(--ink); --radius: 0;
@@ -93,7 +92,7 @@ section { position: relative; scroll-margin-top: 70px; }
 .hp i { flex: 1; background: var(--cobalt); }
 .hp i.off { background: transparent; }
 .slot { aspect-ratio: 1; border: 3px solid var(--ink); background: var(--paper); box-shadow: inset -4px -4px 0 var(--grid); display: grid; place-items: center; text-align: center; font-family: var(--f-mono); font-size: 11px; font-weight: 700; padding: 4px; }
-.slot:hover { background: var(--yellow); }
+	slot:hover { background: var(--yellow); }
 
 /* polaroids */
 .polaroid { background: var(--paper); padding: 10px 10px 40px; border: 2px solid var(--ink); box-shadow: 6px 6px 0 rgb(11 11 15 / .25); transform: rotate(var(--r)); transition: transform .25s steps(4); position: relative; }
