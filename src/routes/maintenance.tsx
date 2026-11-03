@@ -11,10 +11,11 @@ import {
   spriteSize,
 } from "@/lib/night-sky";
 import maintenanceCss from "../maintenance.css?url";
+import { MAINTENANCE } from "../maintenance.config";
 
 export const Route = createFileRoute("/maintenance")({
   head: () => ({
-    meta: [{ title: "Sedang dalam perawatan" }, { name: "robots", content: "noindex" }],
+    meta: [{ title: MAINTENANCE.lines.join(" ") }, { name: "robots", content: "noindex" }],
     links: [{ rel: "stylesheet", href: maintenanceCss }],
   }),
   component: Maintenance,
@@ -89,10 +90,10 @@ function Maintenance() {
           </div>
         </div>
 
-        <h1 className="mt-title" aria-label="Sedang dalam perawatan">
-          <span>Sedang</span>
-          <span>dalam</span>
-          <span>perawatan</span>
+        <h1 className="mt-title" aria-label={MAINTENANCE.lines.join(" ")}>
+          {MAINTENANCE.lines.map((line, i) => (
+            <span key={`${i}-${line}`}>{line}</span>
+          ))}
         </h1>
 
         <div className="mt-bar" aria-hidden>
