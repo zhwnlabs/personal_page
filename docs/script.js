@@ -46,7 +46,17 @@
 
   // tombol suara
   var sb = document.querySelector('.nav a[role="button"]');
-  sb.addEventListener("click", function (e) { e.preventDefault(); sound = !sound; sb.setAttribute("aria-pressed", sound); sb.textContent = sound ? "♪ on" : "♪ off"; beep(true, 880); });
+  var music = document.getElementById("music");
+  function syncMusic() { sound = !music.paused && !music.error; sb.setAttribute("aria-pressed", sound); sb.textContent = sound ? "♪ on" : "♪ off"; }
+  function toggleMusic() {
+    if (!music.paused) { music.pause(); return; }
+    music.play().catch(function () { syncMusic(); toast("Musik belum bisa diputar. Coba lagi ya."); });
+  }
+  music.addEventListener("play", syncMusic);
+  music.addEventListener("pause", syncMusic);
+  music.addEventListener("error", syncMusic);
+  sb.addEventListener("click", function (e) { e.preventDefault(); toggleMusic(); });
+  sb.addEventListener("keydown", function (e) { if (e.key === " ") { e.preventDefault(); toggleMusic(); } });
   document.querySelectorAll('a.px-btn[href="#tentang"]').forEach(function (a) { a.addEventListener("click", function () { beep(sound); }); });
 
   // maskot: kedip + easter egg

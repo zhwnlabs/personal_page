@@ -5,6 +5,7 @@ import gallery1 from "@/assets/rpg-desk.webp.asset.json";
 import gallery2 from "@/assets/zine2.webp.asset.json";
 import gallery3 from "@/assets/novel-desk.webp.asset.json";
 import gallery4 from "@/assets/zine4.webp.asset.json";
+import music from "@/assets/chill.mp3.asset.json";
 
 /* =====================================================================
    KONTEN — ganti semua data di blok ini dengan datamu sendiri
@@ -114,8 +115,22 @@ function Index() {
   const [toast, setToast] = useState<string | null>(null);
   const [sent, setSent] = useState(false);
   const soundRef = useRef(sound);
+  const musicRef = useRef<HTMLAudioElement | null>(null);
   const toastTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
   soundRef.current = sound;
+
+  const toggleMusic = async () => {
+    const audio = musicRef.current;
+    if (!audio) return;
+    if (!audio.paused) { audio.pause(); return; }
+    try { await audio.play(); }
+    catch {
+      setSound(false);
+      clearTimeout(toastTimer.current);
+      setToast("Musik belum bisa diputar. Coba lagi ya.");
+      toastTimer.current = setTimeout(() => setToast(null), 2500);
+    }
+  };
 
   // reveal + active nav
   useEffect(() => {
@@ -131,6 +146,7 @@ function Index() {
     NAV.forEach(([id]) => { const el = document.getElementById(id); if (el) nav.observe(el); });
     return () => {
       io.disconnect(); nav.disconnect(); motion.disconnect();
+      musicRef.current?.pause();
       document.removeEventListener("visibilitychange", visibility);
       document.documentElement.classList.remove("page-hidden");
       clearTimeout(toastTimer.current);
@@ -171,6 +187,7 @@ function Index() {
   return (
     <div>
       <div className="scanlines" aria-hidden />
+      <audio ref={musicRef} src={music.url} preload="none" loop onPlay={() => setSound(true)} onPause={() => setSound(false)} onError={() => setSound(false)} />
 
       {/* NAV */}
       <nav className="nav" aria-label="Navigasi utama">
@@ -178,7 +195,7 @@ function Index() {
           {NAV.slice(0, 2).map(([id, l]) => <a key={id} href={`#${id}`} className={active === id ? "active" : ""}>{l}</a>)}
           <a href="#top" aria-label="Kembali ke atas"><Sprite rows={HEART} colors={C} size={3} /></a>
           {NAV.slice(2).map(([id, l]) => <a key={id} href={`#${id}`} className={active === id ? "active" : ""}>{l}</a>)}
-          <a href="#" role="button" aria-pressed={sound} onClick={(e) => { e.preventDefault(); setSound(!sound); beep(true, 880); }}>{sound ? "♪ on" : "♪ off"}</a>
+          <a href="#" role="button" aria-label="Musik" aria-pressed={sound} onClick={(e) => { e.preventDefault(); void toggleMusic(); }} onKeyDown={(e) => { if (e.key === " ") { e.preventDefault(); void toggleMusic(); } }}>{sound ? "♪ on" : "♪ off"}</a>
         </div>
       </nav>
 
