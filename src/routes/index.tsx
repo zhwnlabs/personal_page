@@ -9,7 +9,7 @@ import gallery4 from "@/assets/zine4.webp.asset.json";
 /* =====================================================================
    KONTEN — ganti semua data di blok ini dengan datamu sendiri
    ===================================================================== */
-const DATA = {
+export const DATA = {
   name: "ZAHWAN",
   role: "UI/UX Designer · Anak SMK",
   tagline: "Ekspresikan apapun lewat coding.",

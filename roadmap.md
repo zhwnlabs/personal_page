@@ -4,5 +4,5 @@
 - [x] Verify mobile layout, interactions, static copy, and existing tests.
 
 # Personalization
-- [ ] Replace sample profile, projects, skills, inventory, gallery captions, and contacts in both versions.
-- [ ] Change purple buttons to matching blue and verify layout and links.
+- [x] Replace sample profile, projects, skills, inventory, gallery captions, and contacts in both versions.
+- [x] Change purple buttons to matching blue and verify layout and links.

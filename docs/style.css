@@ -45,7 +45,7 @@ body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(
 .nav-inner { display: flex; align-items: center; gap: 6px; background: var(--paper); border: 3px solid var(--ink); box-shadow: var(--px-shadow); padding: 6px; border-radius: 999px; flex-wrap: wrap; justify-content: center; }
 .nav a { font-family: var(--f-mono); font-size: 13px; font-weight: 700; text-decoration: none; color: var(--ink); padding: 4px 12px; border-radius: 999px; border: 2px solid transparent; }
 .nav a:hover { border-color: var(--ink); }
-.nav a.active { background: var(--pink); border-color: var(--ink); }
+.nav a.active { background: var(--button-blue); border-color: var(--ink); }
 @media (max-width: 480px) { .nav a { font-size: 11px; padding: 3px 7px; } }
 
 /* hero */
