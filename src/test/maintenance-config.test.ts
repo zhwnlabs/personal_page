@@ -2,9 +2,9 @@ import { describe, expect, it } from "vitest";
 import { MAINTENANCE, needsMaintenanceRedirect } from "@/maintenance.config";
 
 describe("maintenance mode", () => {
-  it("is off by default so the site stays normal until it is switched on", () => {
-    expect(MAINTENANCE.enabled).toBe(false);
-    expect(needsMaintenanceRedirect("/")).toBe(false);
+  it("follows the configured switch for the home page", () => {
+    expect(needsMaintenanceRedirect("/")).toBe(MAINTENANCE.enabled);
+    expect(needsMaintenanceRedirect("/", false)).toBe(false);
   });
 
   it("sends every page except the maintenance page itself to /maintenance", () => {

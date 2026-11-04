@@ -13,3 +13,4 @@
 - Render pixel sprites as color-grouped SVG paths and animate mascot eyelids with CSS to avoid periodic whole-page React updates.
 - Keep performance optimizations in both the app and static copy; static media references must use absolute Lovable asset URLs so repository subpaths work on GitHub Pages.
 - Background music uses a native audio element with preload disabled and starts only on the navigation toggle, keeping initial page loading lightweight.
+- GitHub Pages deploys a staged copy of docs through Actions using scripts/prepare-pages.ts and the shared maintenance config, so switching maintenance never overwrites the normal home page source.
