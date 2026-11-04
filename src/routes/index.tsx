@@ -1,9 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useRef, useState, type CSSProperties } from "react";
 import { spritePaths } from "@/lib/pixel-sprite";
-import gallery1 from "@/assets/rpg-desk.webp.asset.json";
-import gallery2 from "@/assets/zine2.webp.asset.json";
-import gallery3 from "@/assets/novel-desk.webp.asset.json";
+import gallery1 from "@/assets/rpg.webp.asset.json";
+import gallery2 from "@/assets/randomfoto.webp.asset.json";
+import gallery3 from "@/assets/manga.webp.asset.json";
 import gallery4 from "@/assets/zine4.webp.asset.json";
 import music from "@/assets/chill.mp3.asset.json";
 
