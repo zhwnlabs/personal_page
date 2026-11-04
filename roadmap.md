@@ -9,4 +9,4 @@
 
 # Maintenance switch
 - [x] Verify the app switch and make GitHub Pages deployments follow the same config.
-- [ ] Verify on/off static output and routing tests.
+- [x] Verify on/off static output and routing tests.
