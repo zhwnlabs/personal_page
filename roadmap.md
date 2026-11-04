@@ -6,3 +6,7 @@
 # Personalization
 - [x] Replace sample profile, projects, skills, inventory, gallery captions, and contacts in both versions.
 - [x] Change purple buttons to matching blue and verify layout and links.
+
+# Maintenance switch
+- [x] Verify the app switch and make GitHub Pages deployments follow the same config.
+- [ ] Verify on/off static output and routing tests.

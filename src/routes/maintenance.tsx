@@ -15,7 +15,15 @@ import { MAINTENANCE } from "../maintenance.config";
 
 export const Route = createFileRoute("/maintenance")({
   head: () => ({
-    meta: [{ title: MAINTENANCE.lines.join(" ") }, { name: "robots", content: "noindex" }],
+    meta: [
+      { title: `ZAHWAN — ${MAINTENANCE.lines.join(" ")}` },
+      { name: "description", content: "Situs Zahwan sedang dalam perawatan." },
+      { property: "og:title", content: `ZAHWAN — ${MAINTENANCE.lines.join(" ")}` },
+      { property: "og:description", content: "Situs Zahwan sedang dalam perawatan." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
+      { name: "robots", content: "noindex" },
+    ],
     links: [{ rel: "stylesheet", href: maintenanceCss }],
   }),
   component: Maintenance,
