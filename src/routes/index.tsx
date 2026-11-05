@@ -28,7 +28,7 @@ export const DATA = {
   inventory: ["VS Code", "Obsidian", "Blender", "Adobe Illustrator", "Lightroom", "Roblox Studio", "Discord", "CapCut"],
   gallery: [
     // GANTI FOTO: ubah URL "img" dengan foto milikmu (filter duotone otomatis)
-    { img: gallery1.url, cap: "game RPG", r: -6 },
+    { img: gallery1.url, cap: "game story", r: -6 },
     { img: gallery2.url, cap: "foto random", r: 4 },
     { img: gallery3.url, cap: "manga", r: -2 },
     { img: gallery4.url, cap: "kopi & kode", r: 6 },
