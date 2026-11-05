@@ -30,7 +30,7 @@ export const DATA = {
     // GANTI FOTO: ubah URL "img" dengan foto milikmu (filter duotone otomatis)
     { img: gallery1.url, cap: "game RPG", r: -6 },
     { img: gallery2.url, cap: "foto random", r: 4 },
-    { img: gallery3.url, cap: "novel", r: -2 },
+    { img: gallery3.url, cap: "manga", r: -2 },
     { img: gallery4.url, cap: "kopi & kode", r: 6 },
   ],
   funFact: "Aku seorang anak ADHD yang cenderung membutuhkan dopamin lebih banyak, itulah sebabnya aku membangun semua ini:)",
