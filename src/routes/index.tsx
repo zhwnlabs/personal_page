@@ -1,9 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useRef, useState, type CSSProperties } from "react";
 import { spritePaths } from "@/lib/pixel-sprite";
-import gallery1 from "@/assets/rpg-desk.webp.asset.json";
-import gallery2 from "@/assets/zine2.webp.asset.json";
-import gallery3 from "@/assets/novel-desk.webp.asset.json";
+import gallery1 from "@/assets/rpg.webp.asset.json";
+import gallery2 from "@/assets/randomfoto.webp.asset.json";
+import gallery3 from "@/assets/manga.webp.asset.json";
 import gallery4 from "@/assets/zine4.webp.asset.json";
 import music from "@/assets/chill.mp3.asset.json";
 
@@ -28,9 +28,9 @@ export const DATA = {
   inventory: ["VS Code", "Obsidian", "Blender", "Adobe Illustrator", "Lightroom", "Roblox Studio", "Discord", "CapCut"],
   gallery: [
     // GANTI FOTO: ubah URL "img" dengan foto milikmu (filter duotone otomatis)
-    { img: gallery1.url, cap: "game RPG", r: -6 },
+    { img: gallery1.url, cap: "game story", r: -6 },
     { img: gallery2.url, cap: "foto random", r: 4 },
-    { img: gallery3.url, cap: "novel", r: -2 },
+    { img: gallery3.url, cap: "manga", r: -2 },
     { img: gallery4.url, cap: "kopi & kode", r: 6 },
   ],
   funFact: "Aku seorang anak ADHD yang cenderung membutuhkan dopamin lebih banyak, itulah sebabnya aku membangun semua ini:)",
