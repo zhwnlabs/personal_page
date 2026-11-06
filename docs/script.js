@@ -67,7 +67,15 @@
   var seq = ["ArrowUp", "ArrowUp", "ArrowDown", "ArrowDown", "ArrowLeft", "ArrowRight", "ArrowLeft", "ArrowRight", "b", "a"], k = 0;
   addEventListener("keydown", function (e) { k = e.key === seq[k] ? k + 1 : e.key === seq[0] ? 1 : 0; if (k === seq.length) { k = 0; celebrate("+30 NYAWA! KAMU GAMER SEJATI ★"); } });
 
-  // form kontak (demo — belum mengirim email)
+  // GitHub Pages tidak memiliki pengiriman server; buka aplikasi email secara transparan.
   var form = document.querySelector("#kontak form");
-  form.addEventListener("submit", function (e) { e.preventDefault(); form.querySelector("button").textContent = "Terkirim ✓"; celebrate("PESAN TERKIRIM! ★ +100 XP"); });
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+    var email = form.elements.email.value.trim();
+    var message = form.elements.pesan.value.trim();
+    var subject = encodeURIComponent("Pesan dari website Zahwan");
+    var body = encodeURIComponent("Email: " + email + "\n\nPesan:\n" + message);
+    window.location.href = "mailto:ramadhanzahwan98@gmail.com?subject=" + subject + "&body=" + body;
+    toast("Aplikasi email terbuka. Tekan Kirim untuk mengirim pesan.");
+  });
 })();
