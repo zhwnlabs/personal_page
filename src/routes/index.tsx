@@ -336,7 +336,7 @@ function Index() {
                 <p className="t-mono" style={{ color: "var(--paper)", fontSize: 12 }}>PZ-2026-0001 · ZINE ISSUE #01</p>
               </div>
               <form onSubmit={(e) => { e.preventDefault(); setSent(true); celebrate("PESAN TERKIRIM! ★ +100 XP"); }} style={{ display: "grid", gap: 14 }}>
-                <label className="t-mono" style={{ color: "var(--paper)", fontWeight: 700 }}>Nama<input className="field" required name="nama" /></label>
+                <label className="t-mono" style={{ color: "var(--paper)", fontWeight: 700 }}>Email mu<input className="field" required type="email" name="email" autoComplete="email" /></label>
                 <label className="t-mono" style={{ color: "var(--paper)", fontWeight: 700 }}>Pesan<textarea className="field" required rows={4} name="pesan" /></label>
                 <button className="px-btn" type="submit">{sent ? "Terkirim ✓" : "Kirim ▶"}</button>
               </form>
