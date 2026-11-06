@@ -358,7 +358,7 @@ function Index() {
                 setFormStatus("Pesan tersimpan. Notifikasi email aktif setelah domain pengirim diverifikasi.");
                 celebrate("PESAN TERSIMPAN! ★");
               }} style={{ display: "grid", gap: 14 }}>
-                <label className="t-mono" style={{ color: "var(--paper)", fontWeight: 700 }}>Email mu<input className="field" required type="email" name="email" autoComplete="email" maxLength={255} /></label>
+                <label className="t-mono" style={{ color: "var(--paper)", fontWeight: 700 }}>email mu<input className="field" required type="email" name="email" autoComplete="email" maxLength={255} /></label>
                 <label className="t-mono" style={{ color: "var(--paper)", fontWeight: 700 }}>Pesan<textarea className="field" required rows={4} name="pesan" maxLength={4000} /></label>
                 <button className="px-btn" type="submit" disabled={isSending}>{isSending ? "Menyimpan…" : sent ? "Terkirim ✓" : "Kirim ▶"}</button>
                 {formStatus && <p role="status" className="t-mono" style={{ color: "var(--paper)", margin: 0 }}>{formStatus}</p>}
