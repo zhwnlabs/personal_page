@@ -17,7 +17,7 @@ export const DATA = {
   bioBig: "Aku seorang siswa SMK dengan jurusan jaringan, namun aku juga suka membuat beberapa app sederhana dan menyenangkan!",
   bioSmall: "Dari Garut. Saat tidak ngoding: foto hal random, baca manga dan novel, main Wuthering Waves atau Roblox, dan nonton YouTube.",
   projects: [
-    { title: "Camera Tracking", desc: "Track tangan dengan kamera.", tags: ["Python", "OpenCV", "MediaPipe"], link: "https://github.com/zhwnlabs/cameratracking" },
+    { title: "Camera Tracking", desc: "Track tangan dengan kamera.", tags: ["Python", "OpenCV", "MediaPipe"], link: "https://zhwnlabs.github.io/cameratrack-web/" },
     { title: "Get All Camera", desc: "Akses kamera jarak jauh.", tags: [], link: "https://github.com/zhwnlabs/gett-all-camera" },
     { title: "My Community", desc: "Website komunitas.", tags: [], link: "https://zhwnlabs.github.io/deep_garage/" },
   ],
