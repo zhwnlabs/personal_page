@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useRef, useState, type CSSProperties } from "react";
 import { spritePaths } from "@/lib/pixel-sprite";
+import { supabase } from "@/integrations/supabase/client";
 import gallery1 from "@/assets/rpg.webp.asset.json";
 import gallery2 from "@/assets/randomfoto.webp.asset.json";
 import gallery3 from "@/assets/manga.webp.asset.json";
@@ -114,6 +115,8 @@ function Index() {
   const [sound, setSound] = useState(false);
   const [toast, setToast] = useState<string | null>(null);
   const [sent, setSent] = useState(false);
+  const [isSending, setIsSending] = useState(false);
+  const [formStatus, setFormStatus] = useState("");
   const soundRef = useRef(sound);
   const musicRef = useRef<HTMLAudioElement | null>(null);
   const toastTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
@@ -335,10 +338,30 @@ function Index() {
                 <div className="barcode" style={{ maxWidth: 260 }} aria-hidden />
                 <p className="t-mono" style={{ color: "var(--paper)", fontSize: 12 }}>PZ-2026-0001 · ZINE ISSUE #01</p>
               </div>
-              <form onSubmit={(e) => { e.preventDefault(); setSent(true); celebrate("PESAN TERKIRIM! ★ +100 XP"); }} style={{ display: "grid", gap: 14 }}>
-                <label className="t-mono" style={{ color: "var(--paper)", fontWeight: 700 }}>Nama<input className="field" required name="nama" /></label>
-                <label className="t-mono" style={{ color: "var(--paper)", fontWeight: 700 }}>Pesan<textarea className="field" required rows={4} name="pesan" /></label>
-                <button className="px-btn" type="submit">{sent ? "Terkirim ✓" : "Kirim ▶"}</button>
+              <form onSubmit={async (e) => {
+                e.preventDefault();
+                if (isSending) return;
+                const form = e.currentTarget;
+                const values = new FormData(form);
+                const email = String(values.get("email") ?? "").trim();
+                const message = String(values.get("pesan") ?? "").trim();
+                setIsSending(true);
+                setFormStatus("");
+                const { error } = await supabase.from("contact_submissions").insert({ email, message });
+                setIsSending(false);
+                if (error) {
+                  setFormStatus("Pesan belum tersimpan. Coba lagi atau kirim email langsung.");
+                  return;
+                }
+                form.reset();
+                setSent(true);
+                setFormStatus("Pesan tersimpan. Notifikasi email aktif setelah domain pengirim diverifikasi.");
+                celebrate("PESAN TERSIMPAN! ★");
+              }} style={{ display: "grid", gap: 14 }}>
+                <label className="t-mono" style={{ color: "var(--paper)", fontWeight: 700 }}>email mu<input className="field" required type="email" name="email" autoComplete="email" maxLength={255} /></label>
+                <label className="t-mono" style={{ color: "var(--paper)", fontWeight: 700 }}>Pesan<textarea className="field" required rows={4} name="pesan" maxLength={4000} /></label>
+                <button className="px-btn" type="submit" disabled={isSending}>{isSending ? "Menyimpan…" : sent ? "Tersimpan ✓" : "Kirim ▶"}</button>
+                {formStatus && <p role="status" className="t-mono" style={{ color: "var(--paper)", margin: 0 }}>{formStatus}</p>}
               </form>
             </div>
           </div>
