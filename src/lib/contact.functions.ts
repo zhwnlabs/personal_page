@@ -5,6 +5,17 @@ import { contactSubmissionSchema } from "@/lib/contact-schema";
 export const submitContactMessage = createServerFn({ method: "POST" })
   .inputValidator((input: unknown) => contactSubmissionSchema.parse(input))
   .handler(async ({ data }) => {
+    const origin = getRequestHeader("origin");
+    if (origin) {
+      try {
+        const parsedOrigin = new URL(origin);
+        const host = getRequestHeader("host");
+        if (host && parsedOrigin.host !== host) throw new Error("Invalid request origin");
+      } catch {
+        throw new Error("Invalid request origin");
+      }
+    }
+
     const { createClient } = await import("@supabase/supabase-js");
     const url = process.env["SUPABASE_URL"];
     const key = process.env["SUPABASE_PUBLISHABLE_KEY"];
@@ -26,17 +37,6 @@ export const submitContactMessage = createServerFn({ method: "POST" })
 
     const { error } = await client.from("contact_submissions").insert(data);
     if (error) throw new Error("Unable to save contact message");
-
-    const origin = getRequestHeader("origin");
-    if (origin) {
-      try {
-        const parsedOrigin = new URL(origin);
-        const host = getRequestHeader("host");
-        if (host && parsedOrigin.host !== host) throw new Error("Invalid request origin");
-      } catch {
-        throw new Error("Invalid request origin");
-      }
-    }
 
     return { success: true };
   });

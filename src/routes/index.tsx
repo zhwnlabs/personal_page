@@ -1,7 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useServerFn } from "@tanstack/react-start";
 import { useEffect, useRef, useState, type CSSProperties } from "react";
 import { spritePaths } from "@/lib/pixel-sprite";
-import { supabase } from "@/integrations/supabase/client";
+import { submitContactMessage } from "@/lib/contact.functions";
 import gallery1 from "@/assets/rpg.webp.asset.json";
 import gallery2 from "@/assets/randomfoto.webp.asset.json";
 import gallery3 from "@/assets/manga.webp.asset.json";
@@ -111,6 +112,7 @@ function beep(on: boolean, freq = 660, dur = 0.08) {
 }
 
 function Index() {
+  const submitMessage = useServerFn(submitContactMessage);
   const [active, setActive] = useState("");
   const [sound, setSound] = useState(false);
   const [toast, setToast] = useState<string | null>(null);
@@ -347,12 +349,14 @@ function Index() {
                 const message = String(values.get("pesan") ?? "").trim();
                 setIsSending(true);
                 setFormStatus("");
-                const { error } = await supabase.from("contact_submissions").insert({ email, message });
-                setIsSending(false);
-                if (error) {
+                try {
+                  await submitMessage({ data: { email, message } });
+                } catch {
+                  setIsSending(false);
                   setFormStatus("Pesan belum tersimpan. Coba lagi atau kirim email langsung.");
                   return;
                 }
+                setIsSending(false);
                 form.reset();
                 setSent(true);
                 setFormStatus("Pesan tersimpan. Notifikasi email aktif setelah domain pengirim diverifikasi.");
