@@ -13,4 +13,6 @@
 
 # Contact form delivery
 - [x] Rename the first contact field to “Email mu” and capture a valid email address.
-- [ ] Send form messages to Zahwan's email after sender-domain setup; sender domain is not configured yet.
+- [x] Store and validate form messages, and verify a real submission reaches Lovable Cloud.
+- [x] Keep the GitHub Pages form honest by opening the visitor's email app instead of claiming it sent.
+- [ ] Turn on owner email notifications after Zahwan verifies a domain he owns; no sender domain is configured yet.
